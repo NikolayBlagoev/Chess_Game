@@ -51,18 +51,19 @@ public class Pawn extends Piece {
                 if (board.getAt(toX, toY) == null || board.getAt(toX, toY).player() == pl) {
                     throw new AssertionError("Invalid move3");
                 } else {
+                    Piece nwp=this;
+                    if((pl.isOrientationDirection()&&toY==board.maxY)||(!pl.isOrientationDirection()&&toY==0)){
+                        nwp = promote(toX, toY);
+                    }
                     if(board.getAt(toX,toY) instanceof AuxilaryPiece){
                         ((AuxilaryPiece) board.getAt(toX,toY)).take();
                     }
                     board.setAt(x, y, null);
-                    board.setAt(toX, toY, this);
+                    board.setAt(toX, toY, nwp);
 
                     x = toX;
                     y = toY;
-                    if((pl.isOrientationDirection()&&y==board.maxY)||(!pl.isOrientationDirection()&&y==0)){
-                        Piece nwp = promote(x,y);
-                        board.setAt(toX, toY, nwp);
-                    }
+
                     moved = true;
                     return;
                 }
@@ -72,29 +73,33 @@ public class Pawn extends Piece {
                 if (moved) throw new AssertionError("Invalid move");
                 if (board.getAt(toX, toY) != null || board.getAt(toX, (toY + fromY) / 2) != null)
                     throw new AssertionError("Invalid move5");
+                Piece nwp=this;
+                if((pl.isOrientationDirection()&&toY==board.maxY)||(!pl.isOrientationDirection()&&toY==0)){
+                    nwp = promote(toX, toY);
+
+                }
                 board.setAt(x, y, null);
 
-                board.setAt(toX, toY, this);
-                board.setAuxilary(x,(toY+fromY)/2, this);
+                board.setAt(toX, toY, nwp);
+                board.setAuxilary(x,(toY+fromY)/2, (Pawn) nwp);
                 x = toX;
                 y = toY;
-                if((pl.isOrientationDirection()&&y==board.maxY)||(!pl.isOrientationDirection()&&y==0)){
-                    Piece nwp = promote(x,y);
-                    board.setAt(toX, toY, nwp);
-                }
+
                 moved = true;
                 return;
             }
             if (Math.abs(fromY - toY) == 1) {
                 if (board.getAt(toX, toY) != null) throw new AssertionError("Invalid move6");
+                Piece nwp=this;
+                if((pl.isOrientationDirection()&&toY==board.maxY)||(!pl.isOrientationDirection()&&toY==0)){
+                    nwp = promote(toX, toY);
+
+                }
                 board.setAt(x, y, null);
-                board.setAt(toX, toY, this);
+                board.setAt(toX, toY, nwp);
                 x = toX;
                 y = toY;
-                if((pl.isOrientationDirection()&&y==board.maxY)||(!pl.isOrientationDirection()&&y==0)){
-                    Piece nwp = promote(x,y);
-                    board.setAt(toX, toY, nwp);
-                }
+
                 moved = true;
                 return;
             }
