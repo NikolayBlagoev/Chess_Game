@@ -1,19 +1,22 @@
 public class Knight extends Piece {
     private String type="Knight";
-    private int team;
+
     private Board board;
-    public Knight(int team, Board board,int x, int y){
-        this.team=team;
+
+    private final String reset="\u001B[0m";;
+    public Knight(Board board,int x, int y, Player pl){
         this.board=board;
         this.x=x;
         this.y=y;
+        this.pl=pl;
     }
+    private Player pl;
     private int x,y;
 
 
     @Override
     String name() {
-        return type;
+        return type + " of team "+pl.getName();
     }
 
     @Override
@@ -22,12 +25,16 @@ public class Knight extends Piece {
     }
 
     @Override
-    int team() {
-        return team;
+    Player player() {
+        return pl;
     }
+
 
     @Override
     public String toString() {
-        return "N";
+        String output =  pl.getColour();
+        output +=  "N";
+        output+=reset;
+        return output;
     }
 }

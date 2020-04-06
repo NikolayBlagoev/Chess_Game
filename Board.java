@@ -4,42 +4,62 @@ public class Board {
     private String frame=" ";
     private int maxPlayers;
     private int turn=0;
+    private Player[] players;
+    int auxX=-1, auxY=-1;
+    //Colours or display
+    private boolean flagAux=false;
+    public final String ANSI_RESET = "\u001B[0m";
+    public final String ANSI_BLACK = "\u001B[30m";
+    public final String ANSI_RED = "\u001B[31m";
+    public final String ANSI_GREEN = "\u001B[32m";
+    public final String ANSI_YELLOW = "\u001B[33m";
+    public final String ANSI_BLUE = "\u001B[34m";
+    public final String ANSI_PURPLE = "\u001B[35m";
+    public final String ANSI_CYAN = "\u001B[36m";
+    public final String ANSI_WHITE = "\u001B[37m";
+
+
     //Used for classic chess
     public Board(){
         x=8;
         y=8;
         maxPlayers=2;
+        players=new Player[2];
+        players[0] = new Player(1, ANSI_RED, null,16 );
+        players[1] = new Player(2, ANSI_BLUE, null,16 );
+        players[0].setOrientation("+y");
+        players[1].setOrientation("-y");
         board = new Piece[8][8];
         char c = 'A';
         for (int i =0;i<y;i++) {
             frame += (char) (c + i) + " ";
-            board[1][i] = new Pawn(1, this, i, 1);
-            board[6][i] = new Pawn(2, this, i, 6);
+            board[1][i] = new Pawn(this, i, 1,players[0]);
+            board[6][i] = new Pawn(this, i, 6,players[1]);
         }
         //White
-        board[0][0] = new Rook(1, this, 0, 0);
-        board[0][1] = new Knight(1, this,1,0);
-        board[0][2] = new Bishop(1, this,2,0);
-        board[0][3] = new Queen(1, this,3,0);
-        board[0][4] = new King(1, this,4,0);
-        board[0][5] = new Bishop(1, this, 5, 0);
-        board[0][6] = new Knight(1, this,6, 0);
-        board[0][7] = new Rook(1, this, 7, 0);
+        board[0][0] = new Rook(this, 0, 0,players[0]);
+        board[0][1] = new Knight( this,1,0,players[0]);
+        board[0][2] = new Bishop( this,2,0,players[0]);
+        board[0][3] = new Queen(this,3,0,players[0]);
+        board[0][4] = new King(this,4,0,players[0]);
+        board[0][5] = new Bishop(this, 5, 0,players[0]);
+        board[0][6] = new Knight( this,6, 0,players[0]);
+        board[0][7] = new Rook(this, 7, 0,players[0]);
 
         //Black
-        board[7][0] = new Rook(2, this, 0, 7);
-        board[7][1] = new Knight(2, this, 1, 7);
-        board[7][2] = new Bishop(2, this, 2, 7);
-        board[7][3] = new Queen(2, this, 3, 7);
-        board[7][4] = new King(2, this, 4, 7);
-        board[7][5] = new Bishop(2, this,5, 7);
-        board[7][6] = new Knight(2, this, 6, 7);
-        board[7][7] = new Rook(2, this,7,7);
+        board[7][0] = new Rook(this, 0, 7,players[1]);
+        board[7][1] = new Knight(this, 1, 7,players[1]);
+        board[7][2] = new Bishop( this, 2, 7,players[1]);
+        board[7][3] = new Queen(this, 3, 7,players[1]);
+        board[7][4] = new King(this, 4, 7,players[1]);
+        board[7][5] = new Bishop(this,5, 7,players[1]);
+        board[7][6] = new Knight(this, 6, 7,players[1]);
+        board[7][7] = new Rook( this,7,7,players[1]);
     }
     private String get(int x, int y){
         if(x>=this.x||y>=this.y) return "Tile outside of board";
         if(board[y][x]==null) return "Empty tile";
-        return board[y][x].name() + " of team: "+board[y][x].team();
+        return board[y][x].name();
     }
     public Piece getAt(int x, int y){
         if(x>=this.x||y>=this.y||x<0||y<0) return null;
@@ -57,6 +77,19 @@ public class Board {
         }
         return output;
 
+    }
+    protected void destroyAux(){
+        setAt(auxX,auxY, null);
+        auxX=-1;
+        auxY=-1;
+    }
+    protected void setAuxilary(int x, int y, Pawn p){
+        if(x>=this.x||y>=this.y||x<0||y<0) return;
+        setAt(auxX,auxY, null);
+        flagAux=true;
+        auxX=x;
+        auxY=y;
+        board[y][x]=new AuxilaryPiece(this, x, y,p.player(),p);
     }
     private void get(String[] command){
         try {
@@ -119,7 +152,7 @@ public class Board {
                 System.out.println("No piece at tile "+command[1]);
                 return;
             }
-            if(board[y][x].team()-1!=turn){
+            if(board[y][x].player().getTeamNumber()-1!=turn){
                 System.out.println("Not your turn");
                 return;
             }
@@ -139,6 +172,11 @@ public class Board {
             System.out.println("Successfully moved piece from "+command[1]+" to "+command[2]);
             turn+=1;
             turn=turn%maxPlayers;
+            if(flagAux){
+                flagAux=!flagAux;
+            }else {
+                destroyAux();
+            }
         }catch (AssertionError e){
             System.out.println(e.getMessage());
             return;

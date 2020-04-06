@@ -1,19 +1,24 @@
 public class Queen extends Piece {
+
     private String type="Queen";
-    private int team;
+    private final String reset="\u001B[0m";;
     private Board board;
-    public Queen(int team, Board board,int x, int y){
-        this.team=team;
+
+
+    public Queen(Board board,int x, int y, Player pl){
+
         this.board=board;
         this.x=x;
         this.y=y;
+       this.pl=pl;
     }
+    private Player pl;
     private int x,y;
 
 
     @Override
     String name() {
-        return type;
+        return type + " of team "+pl.getName();
     }
 
     @Override
@@ -22,12 +27,16 @@ public class Queen extends Piece {
     }
 
     @Override
-    int team() {
-        return team;
+    Player player() {
+        return pl;
     }
+
 
     @Override
     public String toString() {
-        return "Q";
+        String output =  pl.getColour();
+        output +=  "Q";
+        output+=reset;
+        return output;
     }
 }

@@ -1,19 +1,21 @@
 public class Bishop extends Piece {
     private String type="Bishop";
-    private int team;
+
+    private final String reset="\u001B[0m";;
     private Board board;
-    public Bishop(int team, Board board,int x, int y){
-        this.team=team;
+    public Bishop(Board board,int x, int y, Player pl){
         this.board=board;
         this.x=x;
         this.y=y;
+        this.pl=pl;
     }
+    private Player pl;
     private int x,y;
 
 
     @Override
     String name() {
-        return type;
+        return type + " of team "+pl.getName();
     }
 
     @Override
@@ -22,12 +24,16 @@ public class Bishop extends Piece {
     }
 
     @Override
-    int team() {
-        return team;
+    Player player() {
+        return pl;
     }
+
 
     @Override
     public String toString() {
-        return "B";
+        String output =  pl.getColour();
+        output +=  "B";
+        output+=reset;
+        return output;
     }
 }
