@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class Board {
     private Piece[][] board;
     private int x,y;
@@ -17,16 +19,43 @@ public class Board {
     public final String ANSI_PURPLE = "\u001B[35m";
     public final String ANSI_CYAN = "\u001B[36m";
     public final String ANSI_WHITE = "\u001B[37m";
+    int maxX;
+    int maxY;
 
+    HashMap <String, PieceGeneration> pieces;
 
     //Used for classic chess
     public Board(){
         x=8;
         y=8;
+        maxX=7;
+        maxY=7;
         maxPlayers=2;
         players=new Player[2];
         players[0] = new Player(1, ANSI_RED, null,16 );
         players[1] = new Player(2, ANSI_BLUE, null,16 );
+        pieces = new HashMap<>();
+        PieceGeneration QUEEN = (par1,par2,par3)->{
+            return new Queen(this, par1,par2,par3);
+        };
+        PieceGeneration KNIGHT = (par1,par2,par3)->{
+            return new Knight(this, par1,par2,par3);
+        };
+        PieceGeneration BISHOP = (par1,par2,par3)->{
+            return new Bishop(this, par1,par2,par3);
+        };
+        PieceGeneration ROOK = (par1,par2,par3)->{
+            return new Rook(this, par1,par2,par3);
+        };
+
+        pieces.put("Q",QUEEN);
+        pieces.put("QUEEN",QUEEN);
+        pieces.put("N",KNIGHT);
+        pieces.put("KNIGHT",KNIGHT);
+        pieces.put("R",ROOK);
+        pieces.put("ROOK",ROOK);
+        pieces.put("B",BISHOP);
+        pieces.put("BISHOP",BISHOP);
         players[0].setOrientation("+y");
         players[1].setOrientation("-y");
         board = new Piece[8][8];
@@ -132,7 +161,7 @@ public class Board {
     private void move(String[] command){
         try {
             if (command.length != 3) {
-                System.out.println("Get requires 3 parameters. Syntax: move [Tile Name] [TileName]");
+                System.out.println("Move requires 3 parameters. Syntax: move [Tile Name] [TileName]");
                 return;
             }
             command[1].toUpperCase();
