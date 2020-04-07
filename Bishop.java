@@ -20,6 +20,7 @@ public class Bishop extends Piece {
 
     @Override
     void move(int fromX, int fromY, int toX, int toY) {
+        if(Math.abs(fromX-toX)!=Math.abs(fromY-toY)||fromX!=x||fromY!=y||toX>board.maxX||toY>board.maxY) throw new AssertionError("illegal move");
 
     }
 
