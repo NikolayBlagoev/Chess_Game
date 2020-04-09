@@ -6,6 +6,7 @@ public class Application {
         Scanner sc = new Scanner(System.in);
         while (true) {
             String command = sc.nextLine();
+            command=command.toUpperCase();
             classic.interpet(command);
 
 

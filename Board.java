@@ -145,12 +145,15 @@ public class Board {
         String[] interp = command.split(" ");
         switch (interp[0]){
             case "get":
+            case "GET":
                 get(interp);
                 break;
             case "board":
+            case "BOARD":
                 System.out.println(toString());
                 break;
             case "move":
+            case "MOVE":
                 move(interp);
                 break;
             default:
