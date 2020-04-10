@@ -1,0 +1,14 @@
+Done with:
+  - promotion
+  - pawn movement
+  - En passant
+  - Knight movement
+  - rook movement
+
+
+To do:
+  - bishop
+  - queen
+  - king
+  - check checks
+  - win condtion
