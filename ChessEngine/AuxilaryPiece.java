@@ -9,7 +9,7 @@ public class AuxilaryPiece extends Pawn {
     }
     @Override
     public String toString() {
-        return "O";
+        return "〷";
     }
     @Override
     public void take(){

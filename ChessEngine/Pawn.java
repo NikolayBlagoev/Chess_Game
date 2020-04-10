@@ -38,7 +38,7 @@ public class Pawn extends Piece {
 
     @Override
     void move(int fromX, int fromY, int toX, int toY) throws AssertionError{
-        if((fromX!=x&&fromY!=y)||toX>board.maxX||toY>board.maxY) throw new AssertionError("Invalid move1");
+        if((fromX!=x&&fromY!=y)||toX>board.maxX||toY>board.maxY||(fromX==toX&&toY==fromY)) throw new AssertionError("Invalid move1");
         if(!pl.isOrientationAxis()) {
             if (Math.abs(fromY - toY) > 2||(pl.isOrientationDirection()&&toY<fromY)||(!pl.isOrientationDirection()&&toY>fromY)) throw new AssertionError("Invalid move4 "+toY+" "+fromY+" "+pl.isOrientationDirection());
 
@@ -118,7 +118,7 @@ public class Pawn extends Piece {
     @Override
     public String toString() {
         String output =  pl.getColour();
-        output +=  "P";
+        output +=  "♟";
         output+=reset;
         return output;
     }

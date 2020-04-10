@@ -35,7 +35,7 @@ public class Queen extends Piece {
     @Override
     public String toString() {
         String output =  pl.getColour();
-        output +=  "Q";
+        output +=  "♛";
         output+=reset;
         return output;
     }

@@ -32,7 +32,7 @@ public class King extends Piece {
     @Override
     public String toString() {
         String output =  pl.getColour();
-        output +=  "K";
+        output +=  "♚";
         output+=reset;
         return output;
     }

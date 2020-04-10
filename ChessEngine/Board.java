@@ -10,6 +10,14 @@ public class Board {
     int auxX=-1, auxY=-1;
     //Colours or display
     private boolean flagAux=false;
+    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
+    public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
+    public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+    public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
+    public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
+    public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
+    public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
     public final String ANSI_RESET = "\u001B[0m";
     public final String ANSI_BLACK = "\u001B[30m";
     public final String ANSI_RED = "\u001B[31m";
@@ -220,20 +228,36 @@ public class Board {
     @Override
     public String toString(){
         String output="";
+        output+="\033[1m";
         for(int y=0;y<this.y;y++){
             output+="|";
             for(int x=0;x<this.x;x++){
-                if(board[y][x]==null) {
-                    output+="_";
+                if((x+y)%2==0){
+                    output+=ANSI_BLACK_BACKGROUND;
                 }else{
-                    output+=board[y][x].toString();
+                    output+=ANSI_WHITE_BACKGROUND;
                 }
-                output+="|";
+                if(board[y][x]==null) {
+                    output+="〷";
+                }else{
+
+                    output+=board[y][x].toString();
+
+                }
+                if((x+y)%2==0){
+                    output+=ANSI_BLACK_BACKGROUND;
+                }else{
+                    output+=ANSI_WHITE_BACKGROUND;
+                }
+                output+="";
+                output+=ANSI_RESET;
+
             }
 
             output+=" "+(y+1)+"\n";
         }
         output+=frame;
+        output+="\033[0m";
         return output;
     }
 

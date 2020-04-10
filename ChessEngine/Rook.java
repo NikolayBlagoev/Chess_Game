@@ -22,7 +22,9 @@ public class Rook extends Piece {
     @Override
     void move(int fromX, int fromY, int toX, int toY) {
         if(fromX!=x||fromY!=y) throw new AssertionError("Piece not at this coordinates");
-        if(fromX!=toX&&fromY!=toY||toX<0||toY<0||toX>board.maxX||toY>board.maxY )throw new AssertionError("Invalid move1 "+fromX+" "+toX+" "+fromY+" "+toY);
+        if(fromX!=toX&&fromY!=toY||toX<0||toY<0||toX>board.maxX||toY>board.maxY||(fromX==toX&&toY==fromY) )throw new AssertionError("Invalid move1 "+fromX+" "+toX+" "+fromY+" "+toY);
+
+
         if(fromX==toX){
             move(fromX,fromY,toX,toY,0, (toY-fromY)/Math.abs(toY-fromY));
         }else{
@@ -83,7 +85,7 @@ public class Rook extends Piece {
     @Override
     public String toString() {
         String output =  pl.getColour();
-        output +=  "R";
+        output +=  "♜";
         output+=reset;
         return output;
     }
