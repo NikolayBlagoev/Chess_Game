@@ -3,30 +3,30 @@ import java.util.HashMap;
 public class Board {
     private Piece[][] board;
     private int x,y;
-    private String frame=" ";
+    private String frame="";
     private int maxPlayers;
     private int turn=0;
     private Player[] players;
     int auxX=-1, auxY=-1;
     //Colours or display
     private boolean flagAux=false;
-    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+    public static final String ANSI_BLACK_BACKGROUND = "\u001B[57m";
     public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
     public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
     public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
     public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
     public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
-    public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+    public static final String ANSI_WHITE_BACKGROUND = "\u001B[40m";
     public final String ANSI_RESET = "\u001B[0m";
-    public final String ANSI_BLACK = "\u001B[30m";
+    public final String ANSI_BLACK = "\u001b[38;5;236m";
     public final String ANSI_RED = "\u001B[31m";
     public final String ANSI_GREEN = "\u001B[32m";
     public final String ANSI_YELLOW = "\u001B[33m";
     public final String ANSI_BLUE = "\u001B[34m";
     public final String ANSI_PURPLE = "\u001B[35m";
     public final String ANSI_CYAN = "\u001B[36m";
-    public final String ANSI_WHITE = "\u001B[37m";
+    public final String ANSI_WHITE = "\u001B[30;1m";
     int maxX;
     int maxY;
 
@@ -69,7 +69,13 @@ public class Board {
         board = new Piece[8][8];
         char c = 'A';
         for (int i =0;i<y;i++) {
-            frame += (char) (c + i) + " ";
+            frame += (char) (c + i);
+
+            if(i%4==3) {
+                frame+="\t";
+            }else{
+                frame+=" ";
+            }
             board[1][i] = new Pawn(this, i, 1,players[0]);
             board[6][i] = new Pawn(this, i, 6,players[1]);
         }
@@ -230,7 +236,7 @@ public class Board {
         String output="";
         output+="\033[1m";
         for(int y=0;y<this.y;y++){
-            output+="|";
+            output+="";
             for(int x=0;x<this.x;x++){
                 if((x+y)%2==0){
                     output+=ANSI_BLACK_BACKGROUND;
@@ -238,6 +244,11 @@ public class Board {
                     output+=ANSI_WHITE_BACKGROUND;
                 }
                 if(board[y][x]==null) {
+                    if((x+y)%2==0){
+                        output+=ANSI_BLACK;
+                    }else{
+                        output+=ANSI_WHITE;
+                    }
                     output+="〷";
                 }else{
 
