@@ -4,11 +4,10 @@ Done with:
   - En passant
   - Knight movement
   - rook movement
-
+  - bishop  
+  - queen  
 
 To do:
-  - bishop
-  - queen
   - king
   - check checks
   - win condtion
