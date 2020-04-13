@@ -1,6 +1,6 @@
 public class Rook extends Piece {
     private String type="Rook";
-
+    private int moves=0;
     private final String reset="\u001B[0m";;
     private Board board;
 
@@ -88,5 +88,17 @@ public class Rook extends Piece {
         output +=  "♜";
         output+=reset;
         return output;
+    }
+
+    @Override
+    void setXY(int x, int y) {
+        this.x=x;
+        this.y=y;
+    }
+
+    @Override
+    void unmove(int x, int y) {
+        this.x=x;
+        this.y=y;
     }
 }

@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Pawn extends Piece {
     private String type="Pawn";
-
+    private int moves=0;
     private boolean moved=false;
 
 
@@ -17,7 +17,7 @@ public class Pawn extends Piece {
         this.pl=pl;
     }
     private Player pl;
-    private int x,y;
+     int x,y;
 
     public Piece promote(int x, int y){
         System.out.println("To what figure do u want to promote your pawn?");
@@ -63,7 +63,7 @@ public class Pawn extends Piece {
 
                     x = toX;
                     y = toY;
-
+                    moves++;
                     moved = true;
                     return;
                 }
@@ -84,7 +84,7 @@ public class Pawn extends Piece {
                 board.setAuxilary(x,(toY+fromY)/2, (Pawn) nwp);
                 x = toX;
                 y = toY;
-
+                moves++;
                 moved = true;
                 return;
             }
@@ -99,7 +99,7 @@ public class Pawn extends Piece {
                 board.setAt(toX, toY, nwp);
                 x = toX;
                 y = toY;
-
+                moves++;
                 moved = true;
                 return;
             }
@@ -121,6 +121,20 @@ public class Pawn extends Piece {
         output +=  "♟";
         output+=reset;
         return output;
+    }
+
+    @Override
+    void setXY(int x, int y) {
+        this.x=x;
+        this.y=y;
+    }
+
+    @Override
+    void unmove(int x, int y) {
+        moves--;
+        this.x=x;
+        this.y=y;
+        if(moves==0) moved=false;
     }
 
 

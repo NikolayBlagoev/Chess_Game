@@ -17,4 +17,8 @@ public class AuxilaryPiece extends Pawn {
         b.auxX=-1;
         p.take();
     }
+    @Override
+    void unmove(int x, int y) {
+       b.setAt(p.x,p.y,p);
+    }
 }

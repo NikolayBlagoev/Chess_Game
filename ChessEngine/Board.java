@@ -1,4 +1,6 @@
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Stack;
 
 public class Board {
     private Piece[][] board;
@@ -7,6 +9,7 @@ public class Board {
     private int maxPlayers;
     private int turn=0;
     private Player[] players;
+    private Stack<MoveUndo> moveUndo=new Stack<>();
     int auxX=-1, auxY=-1;
     //Colours or display
     private boolean flagAux=false;
@@ -99,6 +102,46 @@ public class Board {
         board[7][6] = new Knight(this, 6, 7,players[1]);
         board[7][7] = new Rook( this,7,7,players[1]);
     }
+    private void recordMove(Piece p1, Piece p2, int x1, int y1, int x2,int  y2, Piece aux, int aux1,int aux2){
+        MoveUndo mvnd = ()-> {
+            destroyAux();
+            board[y1][x1]=p1;
+            if(p1!=null) p1.unmove(x1,y1);
+            board[y2][x2]=p2;
+            if(p2!=null)p2.unmove(x2,y2);
+            System.out.println(turn);
+            setAt(aux1,aux2,aux);
+            turn-=1;
+            if(turn<0) turn+=maxPlayers;
+            turn=turn%maxPlayers;
+
+            System.out.println(turn+" "+(-1%3));
+        };
+        moveUndo.push(mvnd);
+    }
+    private void executeMove(int x1, int y1, int x2,int  y2){
+        Piece p1 = board[y1][x1];
+        Piece p2 = board [y2][x2];
+        Piece aux = getAt(auxX,auxY);
+        System.out.println(117);
+        System.out.println(118);
+        board[y1][x1].move(x1,y1,x2,y2);
+        System.out.println(119);
+        recordMove(p1,p2,x1,y1,x2,y2,aux,auxX,auxY);
+        turn+=1;
+        turn=turn%maxPlayers;
+        if(flagAux){
+            flagAux=!flagAux;
+        }else {
+            destroyAux();
+        }
+    }
+    private void undoMove(){
+        if(!moveUndo.isEmpty()){
+            MoveUndo mvnd = moveUndo.pop();
+            mvnd.undo();
+        }
+    }
     private String get(int x, int y){
         if(x>=this.x||y>=this.y) return "Tile outside of board";
         if(board[y][x]==null) return "Empty tile";
@@ -166,6 +209,11 @@ public class Board {
             case "BOARD":
                 System.out.println(toString());
                 break;
+            case "undo":
+            case "UNDO":
+            case "BACK":
+                undoMove();
+                break;
             case "move":
             case "MOVE":
                 move(interp);
@@ -214,15 +262,8 @@ public class Board {
                 System.out.println("Invalid tile name at position 2 "+command[2]);
                 return;
             }
-            board[y][x].move(x,y,tox,toy);
+            executeMove(x,y,tox,toy);
             System.out.println("Successfully moved piece from "+command[1]+" to "+command[2]);
-            turn+=1;
-            turn=turn%maxPlayers;
-            if(flagAux){
-                flagAux=!flagAux;
-            }else {
-                destroyAux();
-            }
         }catch (AssertionError e){
             System.out.println(e.getMessage());
             return;

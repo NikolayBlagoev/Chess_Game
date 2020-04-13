@@ -92,4 +92,16 @@ public class Queen extends Piece {
         output+=reset;
         return output;
     }
+
+    @Override
+    void setXY(int x, int y) {
+        this.x=x;
+        this.y=y;
+    }
+
+    @Override
+    void unmove(int x, int y) {
+        this.x=x;
+        this.y=y;
+    }
 }
